@@ -20,8 +20,7 @@ while i < len(disk):
     if (item[1] == "."):
         for j in range(len(disk)-1, i, -1):
             num, char = disk[j][0], disk[j][1]
-            if char != "." and item[0] >= num:#
-                # print(num, char, i, j)
+            if char != "." and item[0] >= num:
                 rem = (item[0] - num, item[1])
                 disk[i] = (num, char)
                 disk[j] = (num, ".")
