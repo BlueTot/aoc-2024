@@ -1,27 +1,16 @@
-# data = """Register A: 10
-# Register B: 0
-# Register C: 0
-
-# Program: 5,0,5,1,5,4""".split("\n\n")
-
 data = """Register A: 48744869
 Register B: 0
 Register C: 0
 
 Program: 2,4,1,2,7,5,1,3,4,4,5,5,0,3,3,0""".split("\n\n")
 
-# data = """Register A: 117440
-# Register B: 0
-# Register C: 0
-
-# Program: 0,3,5,4,3,0""".split("\n\n")
-
 import re
 
 registers = [int(re.findall(r"\d+", row)[0]) for row in data[0].splitlines()]
 program = [*map(int, re.findall(r"\d+", data[1]))]
 
-def checkProgram(registers, program, target):
+# function that emulates the program
+def runProgram(registers, program):
 
     def comboOperand(num):
         if 0 <= num <= 3:
@@ -55,10 +44,6 @@ def checkProgram(registers, program, target):
                 pc += 2
             case 5:
                 output.append(comboOperand(operand) % 8)
-                if len(output) > len(target):
-                    return False, output
-                if output[-1] != target[len(output)-1]:
-                    return False, output
                 pc += 2
             case 6:
                 registers[1] = registers[0] >> comboOperand(operand)
@@ -66,22 +51,20 @@ def checkProgram(registers, program, target):
             case 7:
                 registers[2] = registers[0] >> comboOperand(operand)
                 pc += 2
-    return output == target, output
+    return output
 
-# print(target)
-# print()
-for num in range(0, 40000000, 4):
-    check, output = checkProgram([num, 0, 0], program[:], program[:])
-    if output[0] == 2 and output[1] == 4 and output[2] == 1 and output[3] == 2 and output[4] == 7 and output[5] == 5 and output[6] == 1:
-        print(num, bin(num), output)
-        with open("d17/analysis3.txt", "a") as f:
-            f.write(f"{num}, {bin(num)}, {output}\n")
-    if check:
-        print("We FOUND IT")
-        print(num)
-        break
-    
-    # if (output := runProgram([num, 0, 0], program[:])) == target:
-    #     print(num)
-    #     print(output)
-    # print(runProgram(registers[:], program[:]))
+# backtracking method that finds the right numbers from the back to the front
+# motivation: the last number in the program is only affected by the last 3 bits of the answer, so we go from back to front
+def searchNum(nums):
+    if not nums:
+        return [0]
+    poss = []
+    for curr in searchNum(nums[1:]):
+        for next in range(8):
+            output = runProgram([nnum := (curr << 3) + next, 0, 0], program[:])
+            if output == nums:
+                poss.append(nnum)
+    return poss
+
+found = searchNum(program[:])
+print(min(found))
