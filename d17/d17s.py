@@ -54,4 +54,3 @@ while pc < len(program):
             registers[2] = registers[0] >> comboOperand(operand)
             pc += 2
 print(",".join(map(str, output)))
-print(registers)
