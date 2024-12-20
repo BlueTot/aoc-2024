@@ -139,27 +139,33 @@ data = """######################################################################
 #.###.#.#.#.###.###.#.#.###.#.#.#.#.###.#.#.#.#.#.###.###########.#.#.#.#.###.###.#.#.#####.#####.#.#############.#.#.#######.#.###.#.###.#.#
 #.....#...#.....###...#.....#...#...###...#...#...###.............#...#...###.....#...#####.......#...............#...#######...###...###...#
 #############################################################################################################################################""".splitlines()
-
-# data = """###############
-# #...#...#.....#
-# #.#.#.#.#.###.#
-# #S#...#.#.#...#
-# #######.#.#.###
-# #######.#.#...#
-# #######.#.###.#
-# ###..E#...#...#
-# ###.#######.###
-# #...###...#...#
-# #.#####.#.###.#
-# #.#...#.#.#...#
-# #.#.#.#.#.#.###
-# #...#...#...###
-# ###############""".splitlines()
+'''
+data = """###############
+#...#...#.....#
+#.#.#.#.#.###.#
+#S#...#.#.#...#
+#######.#.#.###
+#######.#.#...#
+#######.#.###.#
+###..E#...#...#
+###.#######.###
+#...###...#...#
+#.#####.#.###.#
+#.#...#.#.#...#
+#.#.#.#.#.#.###
+#...#...#...###
+###############""".splitlines()
+'''
 
 data = [[i for i in row] for row in data]
+minTimeSaved = 100
+# For silver, this is 2. For gold, this is 20.
+minManDist = 20
 
 from collections import deque
+from time import perf_counter
 
+stime = perf_counter()
 for r, row in enumerate(data):
     for c, char in enumerate(row):
         if char == "S":
@@ -167,21 +173,21 @@ for r, row in enumerate(data):
         if char == "E":
             end = (r, c)
 
-def shortestTime(data, start, end):
+def shortestDists(data, start):
+    dists = {}
     queue = deque([(start, 0)])
     visited = set()
     while queue:
-        curr, moves = queue.popleft()
-        if curr == end:
-            return moves
+        curr, dist = queue.popleft()
         if curr in visited:
             continue
+        dists[curr] = dist
         visited.add(curr)
         for dr, dc in ((-1, 0), (1, 0), (0, 1), (0, -1)):
             nr, nc = curr[0]+dr, curr[1]+dc
-            if 0<=nr<len(data) and 0<=nc<len(data[0]) and (nr, nc) not in visited:
-                if data[nr][nc] != "#" and (data[curr[0]][curr[1]] in "SE." or data[curr[0]][curr[1]] == "1" and data[nr][nc] == "2" or data[curr[0]][curr[1]] == "2" and data[nr][nc] != "1"):
-                    queue.append(((nr, nc), moves+1))
+            if data[nr][nc] != "#" and (nr, nc) not in visited:
+                queue.append(((nr, nc), dist+1))
+    return dists
 
 def printGrid(data):
     for row in data:
@@ -190,30 +196,29 @@ def printGrid(data):
         print()
     print()
 
-N = 100
-shortest = shortestTime(data, start, end)
-cheats = {}
-for r, row in enumerate(data):
-    for c, char in enumerate(row):
-        print(r, c)
-        if char == "#":
-            for dr, dc in ((-1, 0), (1, 0), (0, 1), (0, -1)):
-                er, ec = r+dr, c+dc
-                if 0<=er<len(data) and 0<=ec<len(data[0]) and data[er][ec] != "#":
-                    data[r][c] = "1"
-                    origsecond = data[er][ec]
-                    data[er][ec] = "2"
-                    newTime = shortestTime(data, start, end)
-                    data[r][c] = "#"
-                    data[er][ec] = origsecond
-                    if newTime is None:
-                        continue
-                    saving = shortest - newTime
-                    if saving > 0:
-                        if saving not in cheats:
-                            cheats[saving] = 1
-                        else:
-                            cheats[saving] += 1
-print({k: cheats[k] for k in sorted(cheats)})
-print(sum(v for k, v in cheats.items() if k >= N))
+distsFromStart = shortestDists(data, start)
+distsFromEnd = shortestDists(data, end)
 
+def blankSquares(data):
+    for r, row in enumerate(data):
+        for c, char in enumerate(row):
+            if char != "#":
+                yield (r, c)
+
+def distTo(a, b):
+    return abs(a[0]-b[0])+abs(a[1]-b[1])
+
+shortestDist = distsFromStart[end]
+print(shortestDist)
+cheats = {}
+for rs, cs in blankSquares(data):
+    for re, ce in blankSquares(data):
+        if (rs, cs) != (re, ce) and (d := distTo((rs, cs), (re, ce))) <= minManDist:
+            dist = distsFromStart[(rs, cs)] + d + distsFromEnd[(re, ce)]
+            if (newDist := shortestDist - dist) > 0:
+                if newDist not in cheats:
+                    cheats[newDist] = 1
+                else:
+                    cheats[newDist] += 1
+print(sum(v for k, v in cheats.items() if k >= minTimeSaved))
+print(perf_counter() - stime)
