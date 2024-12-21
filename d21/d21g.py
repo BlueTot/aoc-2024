@@ -18,13 +18,17 @@ numericsBackwards = {"0": (3, 1), "1": (2, 0), "2": (2, 1), "3": (2, 2), "4": (1
 robotPad = {(0, 1): "^", (0, 2): "A", (1, 0): "<", (1, 1): "v", (1, 2): ">"}
 robotPadBackwards = {"^": (0, 1), "A": (0, 2), "<": (1, 0), "v": (1, 1), ">": (1, 2)}
 dirs = {(-1, 0) : "^", (1, 0): "v", (0, 1): ">", (0, -1): "<"}
+vals = {"A": 0, "<": 1, "^": 2, "v":3, ">":4}
 
 def heuristic(a, b):
     sq1, sq2 = robotPadBackwards[a], robotPadBackwards[b]
     return abs(sq1[0]-sq2[0])+abs(sq1[1]-sq2[1])
 
 def evaluation(code):
-    return sum(heuristic(code[i], code[i+1]) for i in range(len(code)-1))
+    return sum(heuristic(code[i], code[i+1]) for i in range(len(code)-1)) + code.count("<")+2*code.count("^")+4*code.count("v")+8*code.count(">")
+
+def orderEvaluation(code):
+    return sum((1<<(len(code)-1-i)*vals[char] for i, char in enumerate(code)))
 
 def getPathOnGrid(start, end, valids):
     queue = deque([(start, "", set())])
@@ -90,12 +94,18 @@ def getMinRobotHs(prevs):
     minimum = min(hvals.values())
     return set(k for k, v in hvals.items() if v == minimum)
 
+def getMinRobotHs2(prevs):
+    hvals = {k : orderEvaluation(k) for k in getMinRobotHs(prevs)}
+    minimum = min(hvals.values())
+    return set(k for k, v in hvals.items() if v == minimum)
+
 total = 0
 for code in data:
     curr = controlNumeric(code)
+    print(curr)
     for _ in range(2):
-        curr = getMinRobotHs(curr)
-        print(_, len(curr))
+        curr = getMinRobotHs2(curr)
+        print(_, len(curr), curr)
     numericPart = int(code[:-1])
     minLength = min(len(i) for i in curr)
     print(numericPart, minLength)
