@@ -19,6 +19,13 @@ robotPad = {(0, 1): "^", (0, 2): "A", (1, 0): "<", (1, 1): "v", (1, 2): ">"}
 robotPadBackwards = {"^": (0, 1), "A": (0, 2), "<": (1, 0), "v": (1, 1), ">": (1, 2)}
 dirs = {(-1, 0) : "^", (1, 0): "v", (0, 1): ">", (0, -1): "<"}
 
+def heuristic(a, b):
+    sq1, sq2 = robotPadBackwards[a], robotPadBackwards[b]
+    return abs(sq1[0]-sq2[0])+abs(sq1[1]-sq2[1])
+
+def evaluation(code):
+    return sum(heuristic(code[i], code[i+1]) for i in range(len(code)-1))
+
 def getPathOnGrid(start, end, valids):
     queue = deque([(start, "", set())])
     paths = set()
@@ -36,32 +43,39 @@ def getPathOnGrid(start, end, valids):
                 queue.append(((nr, nc), path+dirs[(dr, dc)], beenbefore | set([(nr, nc)])))
     return paths
 
+def getBestPathsOnGrid(start, end, valids):
+    paths = getPathOnGrid(start, end, valids)
+    hvals = {(npath := path + "A"): evaluation(npath) for path in paths}
+    minimum = min(hvals.values())
+    return set(k for k, v in hvals.items() if v == minimum)
+
+@lru_cache
+def getBestNumericPaths(start, end):
+    return getBestPathsOnGrid(start, end, numerics)
+
+@lru_cache
+def getBestRobotPaths(start, end):
+    return getBestPathsOnGrid(start, end, robotPad)
+
 @lru_cache
 def controlNumeric(code):
     if len(code) == 1:
-        return set(poss + "A" for poss in getPathOnGrid(numericsBackwards["A"], numericsBackwards[code[0]], numerics))
+        return getBestNumericPaths(numericsBackwards["A"], numericsBackwards[code[0]])
     poss = set()
     for pastPoss in controlNumeric(code[:-1]):
-        for nextCont in getPathOnGrid(numericsBackwards[code[-2]], numericsBackwards[code[-1]], numerics):
-            poss.add(pastPoss + nextCont + "A")
+        for nextCont in getBestNumericPaths(numericsBackwards[code[-2]], numericsBackwards[code[-1]]):
+            poss.add(pastPoss + nextCont)
     return poss
 
 @lru_cache
 def controlRobot(code):
     if len(code) == 1:
-        return set(poss + "A" for poss in getPathOnGrid(robotPadBackwards["A"], robotPadBackwards[code[0]], robotPad))
+        return getBestRobotPaths(robotPadBackwards["A"], robotPadBackwards[code[0]])
     poss = set()
     for pastPoss in controlRobot(code[:-1]):
-        for nextCont in getPathOnGrid(robotPadBackwards[code[-2]], robotPadBackwards[code[-1]], robotPad):
-            poss.add(pastPoss + nextCont + "A")
+        for nextCont in getBestRobotPaths(robotPadBackwards[code[-2]], robotPadBackwards[code[-1]]):
+            poss.add(pastPoss + nextCont)
     return poss
-
-def heuristic(a, b):
-    sq1, sq2 = robotPadBackwards[a], robotPadBackwards[b]
-    return abs(sq1[0]-sq2[0])+abs(sq1[1]-sq2[1])
-
-def evaluation(code):
-    return sum(heuristic(code[i], code[i+1]) for i in range(len(code)-1))
 
 def getMinRobotSeqs(prevs):
     nexts = set()
@@ -80,8 +94,8 @@ total = 0
 for code in data:
     curr = controlNumeric(code)
     for _ in range(2):
-        print(_)
         curr = getMinRobotHs(curr)
+        print(_, len(curr))
     numericPart = int(code[:-1])
     minLength = min(len(i) for i in curr)
     print(numericPart, minLength)
