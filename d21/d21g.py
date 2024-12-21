@@ -65,26 +65,47 @@ def controlNumeric(code):
     output = ""
     code = "A" + code
     for i in range(len(code)-1):
-        output += getBestNumericPath(numericsBackwards[code[i]], numericsBackwards[code[i+1]])
+        if code[i] != code[i+1]:
+            output += getBestNumericPath(numericsBackwards[code[i]], numericsBackwards[code[i+1]])
     return output
 
+# assuming we start with an A
 @lru_cache
-def controlRobot(code):
-    output = ""
-    code = "A" + code
+def controlRobotSegment(code):
+    output = []
     for i in range(len(code)-1):
-        output += getBestRobotPath(robotPadBackwards[code[i]], robotPadBackwards[code[i+1]])
+        output.append(getBestRobotPath(robotPadBackwards[code[i]], robotPadBackwards[code[i+1]]))
+    return output
+
+
+def sequence(code, numRobots):
+    output = {}
+    for i in range(numRobots+1):
+        if i == 0:
+            ncode = "A" + code
+            for i in range(len(ncode)-1):
+                for seg in controlRobotSegment(ncode[i:i+2]):
+                    if seg not in output:
+                        output[seg] = 1
+                    else:
+                        output[seg] += 1
+        else:
+            newOutput = {}
+            for segment, times in output.items():
+                for seg in controlRobotSegment("A" + segment):
+                    if seg not in newOutput:
+                        newOutput[seg] = times
+                    else:
+                        newOutput[seg] += times
+            output = newOutput
     return output
 
 total = 0
 for code in data:
     curr = controlNumeric(code)
-    for _ in range(2):
-        curr = controlRobot(curr)
-        print(_, len(curr))
+    curr = sequence(curr, 25)
     numericPart = int(code[:-1])
-    length = len(curr)
-    print(numericPart, length)
+    length = sum(curr.values())
     total += numericPart*length
 print(total)
 
