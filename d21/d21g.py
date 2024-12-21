@@ -20,12 +20,8 @@ robotPadBackwards = {"^": (0, 1), "A": (0, 2), "<": (1, 0), "v": (1, 1), ">": (1
 dirs = {(-1, 0) : "^", (1, 0): "v", (0, 1): ">", (0, -1): "<"}
 vals = {"A": 0, "<": 1, "^": 2, "v":3, ">":4}
 
-def heuristic(a, b):
-    sq1, sq2 = robotPadBackwards[a], robotPadBackwards[b]
-    return abs(sq1[0]-sq2[0])+abs(sq1[1]-sq2[1])
-
 def evaluation(code):
-    return sum(heuristic(code[i], code[i+1]) for i in range(len(code)-1)) + code.count("<")+2*code.count("^")+4*code.count("v")+8*code.count(">")
+    return sum(1 if code[i] != code[i+1] else 0 for i in range(len(code)-1))
 
 def orderEvaluation(code):
     return sum((1<<(len(code)-1-i)*vals[char] for i, char in enumerate(code)))
@@ -47,68 +43,48 @@ def getPathOnGrid(start, end, valids):
                 queue.append(((nr, nc), path+dirs[(dr, dc)], beenbefore | set([(nr, nc)])))
     return paths
 
-def getBestPathsOnGrid(start, end, valids):
+def getBestPathOnGrid(start, end, valids):
     paths = getPathOnGrid(start, end, valids)
     hvals = {(npath := path + "A"): evaluation(npath) for path in paths}
     minimum = min(hvals.values())
-    return set(k for k, v in hvals.items() if v == minimum)
+    paths2 = set(k for k, v in hvals.items() if v == minimum)
+    hvals2 = {path : orderEvaluation(path) for path in paths2}
+    minimum2 = min(hvals2.values())
+    return [k for k, v in hvals2.items() if v == minimum2][0]
 
 @lru_cache
-def getBestNumericPaths(start, end):
-    return getBestPathsOnGrid(start, end, numerics)
+def getBestNumericPath(start, end):
+    return getBestPathOnGrid(start, end, numerics)
 
 @lru_cache
-def getBestRobotPaths(start, end):
-    return getBestPathsOnGrid(start, end, robotPad)
+def getBestRobotPath(start, end):
+    return getBestPathOnGrid(start, end, robotPad)
 
 @lru_cache
 def controlNumeric(code):
-    if len(code) == 1:
-        return getBestNumericPaths(numericsBackwards["A"], numericsBackwards[code[0]])
-    poss = set()
-    for pastPoss in controlNumeric(code[:-1]):
-        for nextCont in getBestNumericPaths(numericsBackwards[code[-2]], numericsBackwards[code[-1]]):
-            poss.add(pastPoss + nextCont)
-    return poss
+    output = ""
+    code = "A" + code
+    for i in range(len(code)-1):
+        output += getBestNumericPath(numericsBackwards[code[i]], numericsBackwards[code[i+1]])
+    return output
 
 @lru_cache
 def controlRobot(code):
-    if len(code) == 1:
-        return getBestRobotPaths(robotPadBackwards["A"], robotPadBackwards[code[0]])
-    poss = set()
-    for pastPoss in controlRobot(code[:-1]):
-        for nextCont in getBestRobotPaths(robotPadBackwards[code[-2]], robotPadBackwards[code[-1]]):
-            poss.add(pastPoss + nextCont)
-    return poss
-
-def getMinRobotSeqs(prevs):
-    nexts = set()
-    for prev in prevs:
-        for poss in controlRobot(prev):
-            nexts.add(poss)
-    minLength = min(len(poss) for poss in nexts)
-    return set(poss for poss in nexts if len(poss) == minLength)
-
-def getMinRobotHs(prevs):
-    hvals = {k : evaluation(k) for k in getMinRobotSeqs(prevs)}
-    minimum = min(hvals.values())
-    return set(k for k, v in hvals.items() if v == minimum)
-
-def getMinRobotHs2(prevs):
-    hvals = {k : orderEvaluation(k) for k in getMinRobotHs(prevs)}
-    minimum = min(hvals.values())
-    return set(k for k, v in hvals.items() if v == minimum)
+    output = ""
+    code = "A" + code
+    for i in range(len(code)-1):
+        output += getBestRobotPath(robotPadBackwards[code[i]], robotPadBackwards[code[i+1]])
+    return output
 
 total = 0
 for code in data:
     curr = controlNumeric(code)
-    print(curr)
     for _ in range(2):
-        curr = getMinRobotHs2(curr)
-        print(_, len(curr), curr)
+        curr = controlRobot(curr)
+        print(_, len(curr))
     numericPart = int(code[:-1])
-    minLength = min(len(i) for i in curr)
-    print(numericPart, minLength)
-    total += numericPart*minLength
+    length = len(curr)
+    print(numericPart, length)
+    total += numericPart*length
 print(total)
 
