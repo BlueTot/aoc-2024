@@ -3378,7 +3378,6 @@ mt-xe
 fv-zl
 or-to
 kp-pp""".splitlines()
-
 '''
 data = """kh-tc
 qp-kh
@@ -3424,14 +3423,29 @@ for start, end in edges:
         edgesDict[end] = set()
     edgesDict[end].add(start)
 
-from itertools import combinations
 nodes = set(edgesDict.keys())
 
-total = 0
-ts = 0
-for p, q, r in combinations(nodes, 3):
-    if q in edgesDict[p] and r in edgesDict[q] and p in edgesDict[r]:
-        total += 1
-        if p.startswith("t") or q.startswith("t") or r.startswith("t"):
-            ts += 1
-print(ts, total)
+def powerSet(s : set):
+    s = list(s)
+
+    for counter in range(2**len(s)):
+        subset = set()
+        for j in range(len(s)):
+            if counter & (1 << j):
+                subset.add(s[j])
+        yield subset
+
+groups = set()
+print(len(nodes))
+for index, node in enumerate(nodes):
+    print(index)
+    for subset in powerSet(edgesDict[node]):
+        for neighbour in subset:
+            if not ((subset | set([node])) - set([neighbour])).issubset(edgesDict[neighbour]):
+                break
+        else:
+            groups.add(tuple(sorted(set([node]) | subset)))
+            # print(node, subset, len(subset))
+maximumLength = max(len(i) for i in groups)
+print(poss := [i for i in groups if len(i) == maximumLength])
+print(",".join(poss[0]))
