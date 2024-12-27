@@ -316,10 +316,10 @@ registers = {line.split(": ")[0] : int(line.split(": ")[1]) for line in data[0].
 
 import re
 
-operations = set(re.search(r"(.*) (AND|OR|XOR) (.*) -> (.*)", line).groups() for line in data[1].splitlines())
+operations = list(re.search(r"(.*) (AND|OR|XOR) (.*) -> (.*)", line).groups() for line in data[1].splitlines())
 
 mapping = {}
-newOperations = set()
+newOperations = []
 
 def mapTo(k):
     return mapping.get(k, k)
@@ -332,13 +332,8 @@ def inMapping(k):
 def sub1(n):
     return str(int(n)-1).zfill(2)
 
-regs = set()
-for operation in operations:
-    reg1, op, reg2, output = operation
-    regs.add(reg1)
-    regs.add(reg2)
-    regs.add(output)
-print(len(regs))
+def add1(n):
+    return str(int(n)+1).zfill(2)
 
 for _ in range(len(operations)):
     for operation in operations.copy():
@@ -350,141 +345,155 @@ for _ in range(len(operations)):
             num, _, outputReg = re.search(p, s).groups()
             mapping[output] = f"e{num}"
             operations.remove(operation)
-            newOperations.add(operation)
+            newOperations.append(operation)
         # y() XOR x() ...
         elif re.match(p := r"y(\d+) XOR x(\1) (.+)", s):
             num, _, outputReg = re.search(p, s).groups()
             mapping[output] = f"e{num}"
             operations.remove(operation)
-            newOperations.add(operation)
+            newOperations.append(operation)
         # e() XOR c(same) ...
         elif re.match(p := r"e(\d+) XOR c(\d+) (.+)", s):
             num1, num2, outputReg = re.search(p, s).groups()
             if int(num1) == int(num2) + 1:
                 mapping[output] = f"z{num1}"
                 operations.remove(operation)
-                newOperations.add(operation)
+                newOperations.append(operation)
         # c() XOR e(same) ...
         elif re.match(p := r"c(\d+) XOR e(\d+) (.+)", s):
             num1, num2, outputReg = re.search(p, s).groups()
             if int(num1) + 1 == int(num2):
                 mapping[output] = f"z{num2}"
                 operations.remove(operation)
-                newOperations.add(operation)
-        # ... XOR c() z(+1)
-        elif re.match(p := r"(.+) XOR c(\d+) z(\d+)", s):
-            inputReg, num1, num2 = re.search(p, s).groups()
-            if int(num2) == int(num1) + 1:
-                mapping[reg1] = f"e{num2}"
-                operations.remove(operation)
-                newOperations.add(operation)
-        # ... XOR e() z(same)
-        elif re.match(p := r"(.+) XOR e(\d+) z(\2)", s):
-            inputReg, num, _ = re.search(p, s).groups()
+                newOperations.append(operation)
+        '''
+        # ... XOR c() ...
+        elif re.match(p := r"(.+) XOR c(\d+) (.+)", s):
+            inputReg, num, outputReg = re.search(p, s).groups()
+            mapping[reg1] = f"e{add1(num)}"
+            mapping[output] = f"z{add1(num)}"
+            operations.remove(operation)
+            newOperations.append(operation)
+        # ... XOR e() ...
+        elif re.match(p := r"(.+) XOR e(\d+) (.+)", s):
+            inputReg, num, outputReg = re.search(p, s).groups()
             mapping[reg1] = f"c{sub1(num)}"
+            mapping[output] = f"z{num}"
             operations.remove(operation)
-            newOperations.add(operation)
-        # e() XOR ... z(same)
-        elif re.match(p := r"e(\d+) XOR (.+) z(\1)", s):
-            num, inputReg, _ = re.search(p, s).groups()
+            newOperations.append(operation)
+        # e() XOR ... ...
+        elif re.match(p := r"e(\d+) XOR (.+) (.+)", s):
+            num, inputReg, outputReg = re.search(p, s).groups()
             mapping[reg2] = f"c{sub1(num)}"
+            mapping[output] = f"z{num}"
             operations.remove(operation)
-            newOperations.add(operation)
-        # c() XOR ... z(+1)
-        elif re.match(p := r"c(\d+) XOR (.+) z(\d+)", s):
-            num1, inputReg, num2 = re.search(p, s).groups()
-            if int(num2) == int(num1) + 1:
-                mapping[reg2] = f"e{num2}"
-                operations.remove(operation)
-                newOperations.add(operation)
+            newOperations.append(operation)
+        # c() XOR ... ...
+        elif re.match(p := r"c(\d+) XOR (.+) (.+)", s):
+            num, inputReg, outputReg = re.search(p, s).groups()
+            mapping[reg2] = f"e{add1(num)}"
+            mapping[output] = f"z{add1(num)}"
+            operations.remove(operation)
+            newOperations.append(operation)
+        '''
         # e() AND c(+1) ...
         elif re.match(p := r"e(\d+) AND c(\d+) (.+)", s):
             num1, num2, outputReg = re.search(p, s).groups()
             if int(num1) == int(num2) + 1:
                 mapping[output] = f"b{num1}"
                 operations.remove(operation)
-                newOperations.add(operation)
+                newOperations.append(operation)
         # c() AND e(-1) ...
         elif re.match(p := r"c(\d+) AND e(\d+) (.+)", s):
             num1, num2, outputReg = re.search(p, s).groups()
             if int(num1) + 1 == int(num2):
                 mapping[output] = f"b{num2}"
                 operations.remove(operation)
-                newOperations.add(operation)
-        # ... AND e() b(same)
-        elif re.match(p := r"(.+) AND e(\d+) b(\2)", s):
-            inputReg, num, _ = re.search(p, s).groups()
+                newOperations.append(operation)
+        '''
+        # ... AND e() ...
+        elif re.match(p := r"(.+) AND e(\d+) (.+)", s):
+            inputReg, num, outputReg = re.search(p, s).groups()
             mapping[reg1] = f"c{sub1(num)}"
+            mapping[reg1] = f"b{num}"
             operations.remove(operation)
-            newOperations.add(operation)
-        # ... AND c() b(+1)
-        elif re.match(p := r"(.+) AND c(\d+) b(\d+)", s):
-            inputReg, num1, num2 = re.search(p, s).groups()
-            if int(num1) + 1 == int(num2):
-                mapping[reg1] = f"e{num2}"
-                operations.remove(operation)
-                newOperations.add(operation)
-        # e() AND ... b(same)
-        elif re.match(p := r"e(\d+) AND (.+) b(\1)", s):
-            num, inputReg, _ = re.search(p, s).groups()
-            mapping[reg2] = f"c{int(num)-1}"
+            newOperations.append(operation)
+        # ... AND c() ...
+        elif re.match(p := r"(.+) AND c(\d+) (.+)", s):
+            inputReg, num, outputReg = re.search(p, s).groups()
+            mapping[reg1] = f"e{add1(num)}"
+            mapping[output] = f"b{add1(num)}"
             operations.remove(operation)
-            newOperations.add(operation)
-        # c() AND ... b(+1)
-        elif re.match(p := r"c(\d+) AND (.+) b(\d+)", s):
-            num1, inputReg, num2 = re.search(p, s).groups()
-            if int(num1) + 1 == int(num2):
-                mapping[reg2] = f"e{num2}"
-                operations.remove(operation)
-                newOperations.add(operation)
+            newOperations.append(operation)
+        # e() AND ... ...
+        elif re.match(p := r"e(\d+) AND (.+) (.+)", s):
+            num, inputReg, outputReg = re.search(p, s).groups()
+            mapping[reg2] = f"c{sub1(num)}"
+            mapping[output] = f"b{num}"
+            operations.remove(operation)
+            newOperations.append(operation)
+        # c() AND ... ...
+        elif re.match(p := r"c(\d+) AND (.+) (.+)", s):
+            num, inputReg, outputReg = re.search(p, s).groups()
+            mapping[reg2] = f"e{add1(num)}"
+            mapping[output] = f"b{add1(num)}"
+            operations.remove(operation)
+            newOperations.append(operation)
+        '''
         # x() AND y(same) ...
         elif re.match(p := r"x(\d+) AND y(\1) (.+)", s):
             num, _, outputReg = re.search(p, s).groups()
             mapping[output] = f"a{num}"
             operations.remove(operation)
-            newOperations.add(operation)
+            newOperations.append(operation)
         # y() AND x(same) ...
         elif re.match(p := r"y(\d+) AND x(\1) (.+)", s):
             num, _, outputReg = re.search(p, s).groups()
             mapping[output] = f"a{num}"
             operations.remove(operation)
-            newOperations.add(operation)
+            newOperations.append(operation)
         # a() OR b(same) ...
         elif re.match(p := r"a(\d+) OR b(\1) (.+)", s):
             num, _, outputReg = re.search(p, s).groups()
             mapping[output] = f"c{num}"
             operations.remove(operation)
-            newOperations.add(operation)
+            newOperations.append(operation)
         # b() OR a(same) ...
         elif re.match(p := r"b(\d+) OR a(\1) (.+)", s):
             num, _, outputReg = re.search(p, s).groups()
             mapping[output] = f"c{num}"
             operations.remove(operation)
-            newOperations.add(operation)
-        # ... OR b() c(same)
-        elif re.match(p := r"(.+) OR b(\d+) c(\2)", s):
-            inputReg, num, _ = re.search(p, s).groups()
+            newOperations.append(operation)
+        '''
+        # ... OR b() ...
+        elif re.match(p := r"(.+) OR b(\d+) (.+)", s):
+            inputReg, num, outputReg = re.search(p, s).groups()
             mapping[reg1] = f"a{num}"
+            mapping[output] = f"c{num}"
             operations.remove(operation)
-            newOperations.add(operation)
+            newOperations.append(operation)
         # ... OR a() c(same)
-        elif re.match(p := r"(.+) OR a(\d+) c(\2)", s):
-            inputReg, num, _ = re.search(p, s).groups()
+        elif re.match(p := r"(.+) OR a(\d+) (.+)", s):
+            inputReg, num, outputReg = re.search(p, s).groups()
             mapping[reg1] = f"b{num}"
+            mapping[output] = f"c{num}"
             operations.remove(operation)
-            newOperations.add(operation)
+            newOperations.append(operation)
         # a() OR ... c(same)
-        elif re.match(p := r"a(\d+) OR (.+) c(\1)", s):
-            num, inputReg, _ = re.search(p, s).groups()
+        elif re.match(p := r"a(\d+) OR (.+) (.+)", s):
+            num, inputReg, outputReg = re.search(p, s).groups()
             mapping[reg2] = f"b{num}"
+            mapping[output] = f"c{num}"
             operations.remove(operation)
-            newOperations.add(operation)
+            newOperations.append(operation)
         # b() OR ... c(same)
-        elif re.match(p := r"b(\d)+ OR (.+) c(\1)", s):
-            num, inputReg, _ = re.search(p, s).groups()
+        elif re.match(p := r"b(\d)+ OR (.+) (.+)", s):
+            num, inputReg, outputReg = re.search(p, s).groups()
             mapping[reg2] = f"a{num}"
+            mapping[outputReg] = f"c{num}"
             operations.remove(operation)
-            newOperations.add(operation)
+            newOperations.append(operation)
+        '''
 
 for operation in newOperations:
     reg1, op, reg2, output = operation
