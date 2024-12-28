@@ -1,0 +1,336 @@
+new operations 1
+y40 AND x40 -> a40
+x37 AND y37 -> a37
+x13 XOR y13 -> e13
+y02 AND x02 -> a02
+x36 AND y36 -> a36
+x38 XOR y38 -> e38
+x40 XOR y40 -> e40
+x39 XOR y39 -> e39
+y25 XOR x25 -> e25
+y30 XOR x30 -> e30
+x17 AND y17 -> a17
+x06 XOR y06 -> e06
+y32 XOR x32 -> e32
+x36 XOR y36 -> e36
+y22 XOR x22 -> e22
+y41 AND x41 -> a41
+x21 AND y21 -> a21
+x28 AND y28 -> a28
+x10 AND y10 -> a10
+x44 XOR y44 -> e44
+y20 XOR x20 -> e20
+x01 AND y01 -> a01
+y18 AND x18 -> a18
+x00 AND y00 -> c00
+y03 XOR x03 -> e03
+y43 XOR x43 -> e43
+y09 XOR x09 -> e09
+x15 XOR y15 -> e15
+x35 XOR y35 -> e35
+x21 XOR y21 -> e21
+y02 XOR x02 -> e02
+y39 AND x39 -> a39
+y09 AND x09 -> a09
+x33 AND y33 -> a33
+y31 XOR x31 -> e31
+x19 AND y19 -> a19
+y07 XOR x07 -> e07
+y07 AND x07 -> a07
+y34 XOR x34 -> e34
+y08 XOR x08 -> e08
+x15 AND y15 -> a15
+y29 AND x29 -> a29
+x33 XOR y33 -> e33
+x16 AND y16 -> a16
+x04 XOR y04 -> e04
+x44 AND y44 -> a44
+y32 AND x32 -> a32
+y38 AND x38 -> a38
+x22 AND y22 -> a22
+y29 XOR x29 -> e29
+x13 AND y13 -> a13
+x00 XOR y00 -> e00
+y28 XOR x28 -> e28
+x11 AND y11 -> a11
+x10 XOR y10 -> e10
+y42 XOR x42 -> e42
+x06 AND y06 -> a06
+y34 AND x34 -> a34
+y25 AND x25 -> a25
+y43 AND x43 -> a43
+y23 XOR x23 -> e23
+y11 XOR x11 -> e11
+y30 AND x30 -> a30
+x08 AND y08 -> a08
+y04 AND x04 -> a04
+y01 XOR x01 -> e01
+x27 XOR y27 -> e27
+x12 XOR y12 -> e12
+x16 XOR y16 -> e16
+y26 XOR x26 -> e26
+x31 AND y31 -> a31
+x12 AND y12 -> a12
+c00 XOR e01 -> z01
+x23 AND y23 -> a23
+y41 XOR x41 -> e41
+y17 XOR x17 -> e17
+x19 XOR y19 -> e19
+x35 AND y35 -> a35
+x20 AND y20 -> a20
+x27 AND y27 -> a27
+y14 XOR x14 -> e14
+y03 AND x03 -> a03
+x37 XOR y37 -> e37
+y42 AND x42 -> a42
+y05 XOR x05 -> e05
+x05 AND y05 -> a05
+x18 XOR y18 -> e18
+y14 AND x14 -> a14
+x24 AND y24 -> a24
+y24 XOR x24 -> e24
+x26 AND y26 -> a26
+c00 AND e01 -> b01
+a01 OR b01 -> c01
+c01 XOR e02 -> z02
+c01 AND e02 -> b02
+b02 OR a02 -> c02
+e03 XOR c02 -> z03
+c02 AND e03 -> b03
+b03 OR a03 -> c03
+e04 XOR c03 -> z04
+c03 AND e04 -> b04
+b04 OR a04 -> c04
+e05 XOR c04 -> z05
+c04 AND e05 -> b05
+b05 OR a05 -> c05
+c05 XOR e06 -> z06
+e06 AND c05 -> b06
+b06 OR a06 -> c06
+c06 AND e07 -> b07
+c06 XOR e07 -> z07
+b07 OR a07 -> c07
+e08 XOR c07 -> z08
+c07 AND e08 -> b08
+b08 OR a08 -> c08
+e09 AND c08 -> b09
+c08 XOR e09 -> z09
+
+old operations 1
+kpc OR a11 -> chv
+mrn XOR e31 -> z31
+nfw OR a12 -> wkc
+tdg XOR e35 -> z35
+pjv AND e25 -> hrr
+e18 AND qcq -> mnr
+ghr XOR a37 -> z37
+e13 AND wkc -> nrm
+mmp OR a19 -> rbc
+e30 AND jtf -> sqj
+e20 AND rbc -> bvb
+a36 OR cbd -> ghr
+psj XOR e21 -> z21
+a41 OR dgc -> fqf
+dds XOR e33 -> z33
+sfv AND e43 -> qmq
+djv OR a31 -> fgt
+e22 XOR nfn -> z22
+bkn OR a38 -> gng
+nfn AND e22 -> tgj
+e34 XOR bcm -> z34
+cqk XOR e15 -> z15
+dch AND e24 -> fkr
+ggh AND e38 -> bkn
+a15 OR tkb -> jkw
+ttm OR a29 -> jtf
+e23 XOR scw -> bks
+e14 AND qjr -> tgq
+ggh XOR e38 -> z38
+jtf XOR e30 -> z30
+e42 AND fqf -> fpf
+gng XOR e39 -> z39
+a42 OR fpf -> sfv
+e34 AND bcm -> kbp
+e14 XOR qjr -> z14
+hfw OR a32 -> dds
+e40 AND dpf -> cvp
+e18 XOR qcq -> z18
+e36 XOR rdh -> z36
+a20 OR bvb -> psj
+qmq OR a43 -> cvc
+e35 AND tdg -> ctf
+e27 XOR jdn -> z27
+e17 AND tdv -> vdn
+fdp AND e29 -> ttm
+e41 AND rnw -> dgc
+nvh OR a27 -> vdm
+a22 OR tgj -> scw
+a44 OR sjh -> z45
+scw AND e23 -> qhm
+a33 OR dhg -> bcm
+kmf XOR e10 -> z10
+rbc XOR e20 -> z20
+gbc OR a39 -> dpf
+sqj OR a30 -> mrn
+tdv XOR e17 -> z17
+kgv XOR e26 -> z26
+cmm OR a26 -> jdn
+a09 OR z09 -> kmf
+a40 OR cvp -> rnw
+e41 XOR rnw -> z41
+e43 XOR sfv -> z43
+ncj OR a16 -> z16
+a24 OR fkr -> pjv
+e13 XOR wkc -> z13
+jkw XOR e16 -> tdv
+e11 AND cpj -> kpc
+dpf XOR e40 -> z40
+chv AND e12 -> nfw
+vdm XOR e28 -> z28
+e10 AND kmf -> hhm
+fgt AND e32 -> hfw
+e32 XOR fgt -> z32
+e25 XOR pjv -> z25
+a28 OR mdh -> fdp
+a37 AND ghr -> kpb
+qhm OR bks -> dch
+psj AND e21 -> ffm
+e28 AND vdm -> mdh
+mnr OR a18 -> gbr
+e27 AND jdn -> nvh
+a34 OR kbp -> tdg
+e12 XOR chv -> z12
+fdp XOR e29 -> z29
+e44 XOR cvc -> z44
+e42 XOR fqf -> z42
+e31 AND mrn -> djv
+cpj XOR e11 -> z11
+e24 XOR dch -> z24
+cqk AND e15 -> tkb
+vdn OR a17 -> qcq
+ffm OR a21 -> nfn
+a13 OR nrm -> qjr
+e19 XOR gbr -> z19
+a14 OR tgq -> cqk
+ctf OR a35 -> rdh
+kgv AND e26 -> cmm
+e39 AND gng -> gbc
+a25 OR hrr -> kgv
+rdh AND e36 -> cbd
+cvc AND e44 -> sjh
+hhm OR a10 -> cpj
+e16 AND jkw -> ncj
+kpb OR e37 -> ggh
+gbr AND e19 -> mmp
+dds AND e33 -> dhg
+
+new operations 2
+b11 OR a11 -> c11 : b11 OR a11 -> c11
+c30 XOR e31 -> z31 : c30 XOR e31 -> z31
+b12 OR a12 -> c12 : b12 OR a12 -> c12
+c34 XOR e35 -> z35 : c34 XOR e35 -> z35
+c24 AND e25 -> b25 : c24 AND e25 -> b25
+e18 AND c17 -> b18 : e18 AND c17 -> b18
+e13 AND c12 -> b13 : e13 AND c12 -> b13
+b19 OR a19 -> c19 : b19 OR a19 -> c19
+e30 AND c29 -> b30 : e30 AND c29 -> b30
+e20 AND c19 -> b20 : e20 AND c19 -> b20
+a36 OR b36 -> c36 : a36 OR b36 -> ghr
+c20 XOR e21 -> z21 : c20 XOR e21 -> z21
+a41 OR b41 -> c41 : a41 OR b41 -> c41
+c32 XOR e33 -> z33 : c32 XOR e33 -> z33
+c42 AND e43 -> b43 : c42 AND e43 -> b43
+b31 OR a31 -> c31 : b31 OR a31 -> c31
+e22 XOR c21 -> z22 : e22 XOR c21 -> z22
+b38 OR a38 -> c38 : b38 OR a38 -> c38
+c21 AND e22 -> b22 : c21 AND e22 -> b22
+e34 XOR c33 -> z34 : e34 XOR c33 -> z34
+c14 XOR e15 -> z15 : c14 XOR e15 -> z15
+c23 AND e24 -> b24 : c23 AND e24 -> b24
+c37 AND e38 -> b38 : c37 AND e38 -> b38
+a15 OR b15 -> c15 : a15 OR b15 -> c15
+b29 OR a29 -> c29 : b29 OR a29 -> c29
+e23 XOR c22 -> z23 : e23 XOR c22 -> bks
+e14 AND c13 -> b14 : e14 AND c13 -> b14
+c37 XOR e38 -> z38 : c37 XOR e38 -> z38
+c29 XOR e30 -> z30 : c29 XOR e30 -> z30
+e42 AND c41 -> b42 : e42 AND c41 -> b42
+c38 XOR e39 -> z39 : c38 XOR e39 -> z39
+a42 OR b42 -> c42 : a42 OR b42 -> c42
+e34 AND c33 -> b34 : e34 AND c33 -> b34
+e14 XOR c13 -> z14 : e14 XOR c13 -> z14
+b32 OR a32 -> c32 : b32 OR a32 -> c32
+e40 AND c39 -> b40 : e40 AND c39 -> b40
+e18 XOR c17 -> z18 : e18 XOR c17 -> z18
+e36 XOR c35 -> z36 : e36 XOR c35 -> z36
+a20 OR b20 -> c20 : a20 OR b20 -> c20
+b43 OR a43 -> c43 : b43 OR a43 -> c43
+e35 AND c34 -> b35 : e35 AND c34 -> b35
+e27 XOR c26 -> z27 : e27 XOR c26 -> z27
+e17 AND c16 -> b17 : e17 AND c16 -> b17
+c28 AND e29 -> b29 : c28 AND e29 -> b29
+e41 AND c40 -> b41 : e41 AND c40 -> b41
+b27 OR a27 -> c27 : b27 OR a27 -> c27
+a22 OR b22 -> c22 : a22 OR b22 -> c22
+a44 OR b44 -> c44 : a44 OR b44 -> z45
+c22 AND e23 -> b23 : c22 AND e23 -> qhm
+a33 OR b33 -> c33 : a33 OR b33 -> c33
+c09 XOR e10 -> z10 : c09 XOR e10 -> z10
+c19 XOR e20 -> z20 : c19 XOR e20 -> z20
+b39 OR a39 -> c39 : b39 OR a39 -> c39
+b30 OR a30 -> c30 : b30 OR a30 -> c30
+c16 XOR e17 -> z17 : c16 XOR e17 -> z17
+c25 XOR e26 -> z26 : c25 XOR e26 -> z26
+b26 OR a26 -> c26 : b26 OR a26 -> c26
+a09 OR b09 -> c09 : a09 OR z09 -> c09
+a40 OR b40 -> c40 : a40 OR b40 -> c40
+e41 XOR c40 -> z41 : e41 XOR c40 -> z41
+e43 XOR c42 -> z43 : e43 XOR c42 -> z43
+b16 OR a16 -> c16 : b16 OR a16 -> z16
+a24 OR b24 -> c24 : a24 OR b24 -> c24
+e13 XOR c12 -> z13 : e13 XOR c12 -> z13
+c15 XOR e16 -> z16 : c15 XOR e16 -> c16
+e11 AND c10 -> b11 : e11 AND c10 -> b11
+c39 XOR e40 -> z40 : c39 XOR e40 -> z40
+c11 AND e12 -> b12 : c11 AND e12 -> b12
+c27 XOR e28 -> z28 : c27 XOR e28 -> z28
+e10 AND c09 -> b10 : e10 AND c09 -> b10
+c31 AND e32 -> b32 : c31 AND e32 -> b32
+e32 XOR c31 -> z32 : e32 XOR c31 -> z32
+e25 XOR c24 -> z25 : e25 XOR c24 -> z25
+a28 OR b28 -> c28 : a28 OR b28 -> c28
+c20 AND e21 -> b21 : c20 AND e21 -> b21
+e28 AND c27 -> b28 : e28 AND c27 -> b28
+b18 OR a18 -> c18 : b18 OR a18 -> c18
+e27 AND c26 -> b27 : e27 AND c26 -> b27
+a34 OR b34 -> c34 : a34 OR b34 -> c34
+e12 XOR c11 -> z12 : e12 XOR c11 -> z12
+c28 XOR e29 -> z29 : c28 XOR e29 -> z29
+e44 XOR c43 -> z44 : e44 XOR c43 -> z44
+e42 XOR c41 -> z42 : e42 XOR c41 -> z42
+e31 AND c30 -> b31 : e31 AND c30 -> b31
+c10 XOR e11 -> z11 : c10 XOR e11 -> z11
+e24 XOR c23 -> z24 : e24 XOR c23 -> z24
+c14 AND e15 -> b15 : c14 AND e15 -> b15
+b17 OR a17 -> c17 : b17 OR a17 -> c17
+b21 OR a21 -> c21 : b21 OR a21 -> c21
+a13 OR b13 -> c13 : a13 OR b13 -> c13
+e19 XOR c18 -> z19 : e19 XOR c18 -> z19
+a14 OR b14 -> c14 : a14 OR b14 -> c14
+b35 OR a35 -> c35 : b35 OR a35 -> c35
+c25 AND e26 -> b26 : c25 AND e26 -> b26
+e39 AND c38 -> b39 : e39 AND c38 -> b39
+a25 OR b25 -> c25 : a25 OR b25 -> c25
+c35 AND e36 -> b36 : c35 AND e36 -> b36
+c43 AND e44 -> b44 : c43 AND e44 -> b44
+b10 OR a10 -> c10 : b10 OR a10 -> c10
+e16 AND c15 -> b16 : e16 AND c15 -> b16
+c18 AND e19 -> b19 : c18 AND e19 -> b19
+c32 AND e33 -> b33 : c32 AND e33 -> b33
+
+old operations 2
+ghr XOR a37 -> z37
+a37 AND ghr -> kpb
+qhm OR bks -> dch
+kpb OR e37 -> ggh
+
